@@ -23,14 +23,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	sender(conn)
+	go sender(conn)
 
-	_, msg, err := conn.ReadMessage()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("Message from server : %v\n", string(msg))
+	go reader(conn)
 
 	fmt.Println("Exiting the application")
 }
@@ -57,4 +52,15 @@ func sender(conn *websocket.Conn) {
 		fmt.Println("Error from scanner:", err)
 	}
 
+}
+
+func reader(conn *websocket.Conn) {
+	for {
+		_, msg, err := conn.ReadMessage()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Printf("Message from server : %v\n", string(msg))
+	}
 }
