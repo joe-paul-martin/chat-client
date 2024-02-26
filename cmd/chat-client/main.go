@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"log"
+	"net/http"
 	"net/url"
 	"os"
 
@@ -18,14 +19,17 @@ func main() {
 		Path:   "/ws",
 	}
 
-	conn, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
+	header := http.Header{}
+	header.Add("name", "client1")
+
+	conn, _, err := websocket.DefaultDialer.Dial(u.String(), header)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	go sender(conn)
-
 	go reader(conn)
+
+	sender(conn)
 
 	fmt.Println("Exiting the application")
 }
