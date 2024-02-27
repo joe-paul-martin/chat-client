@@ -20,7 +20,7 @@ func main() {
 	}
 
 	header := http.Header{}
-	header.Add("name", "client1")
+	header.Add("name", "client2")
 
 	conn, _, err := websocket.DefaultDialer.Dial(u.String(), header)
 	if err != nil {
